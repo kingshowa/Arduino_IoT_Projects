@@ -1,5 +1,7 @@
 #include <WiFiNINA.h>
 #include <PubSubClient.h>
+#include<Stepper.h>
+#include<Servo.h>
 
 const char* ssid = "WiFi-LabIoT";
 const char* password = "s1jzsjkw5b";
@@ -15,17 +17,23 @@ WiFiClient rev2Client;            // WiFi client
 PubSubClient client(rev2Client);  // MQTT client
 
 // Global variables
-int floor_request_from = 0;
-int floor_request_to = 0;
-int elevator_current_floor = 0;
+int request_from = 0;
+int request_to = 0;
+int current_floor = 0;
+int distance = 5000;
+bool going_up, going_down;
+
+double spr = 2048;
+Stepper stepper (spr,8,10,9,11);
+Servo servo;
+
+int SERVO_PIN = 13;
 
 void setup() {
   // Start serial port at 9600 bps:
   Serial.begin(9600);
-
   // setup WiFi
   setupWifi();
-  
   // MQTT connection:
   Serial.println();
   client.setServer(mqtt_server,mqtt_port);
@@ -34,14 +42,64 @@ void setup() {
   if (!client.connected()) {
     reconnect();
   }
+
+  servo.attach(SERVO_PIN);
+  servo.write(0);
+
+  stepper.setSpeed(10);
 }
 
 void loop() {
   client.loop();
   
-  boolean rc = client.publish(mqtt_floor_tracker_topic, elevator_current_floor); // Publish the elevator current floor
+  boolean rc = client.publish(mqtt_floor_tracker_topic, current_floor); // Publish the elevator current floor
+
+  if(request_from != request_to){
+    if(request_from != current_floor){
+      moveElevator(current_floor, request_from);
+    } 
+    openDoor();
+    moveElevator(request_from, request_to);
+    openDoor();
+  }
 }
 
+void openDoor(){
+
+}
+
+void moveElevator(int A, int B){
+  if(A>B){
+    going_up = false;
+    going_down = true;
+  } else{
+    going_up = true;
+    going_down = false;
+  }
+
+  swicth(A){
+    case 0: if(B==1){
+              stepper.step(distance);
+            } else {
+              stepper.step(distance*2);
+            }
+            break;
+    case 1: if(B==2){
+              stepper.step(distance);
+            } else {
+              stepper.step(-distance);
+            }
+            break;
+    case 2: if(B==1){
+              stepper.step(-distance);
+            } else {
+              stepper.step(-distance*2);
+            }
+            break;
+    default: break;
+  }
+  current_floor = B;
+}
 
 // Function to process received messages
 void callback(char* topic, byte* message, unsigned int length) {
@@ -57,10 +115,10 @@ void callback(char* topic, byte* message, unsigned int length) {
   Serial.println(messageTemp);
 
   if(strcmp(topic, mqtt_current_floor_topic)==0){
-    floor_request_from = toInt(messageTemt);
+    request_from = toInt(messageTemt);
   }
   else if(strcmp(topic, mqtt_destination_floor_topic)==0){
-    floor_request_to = toInt(messageTemt);
+    request_to = toInt(messageTemt);
   }
 }
 
