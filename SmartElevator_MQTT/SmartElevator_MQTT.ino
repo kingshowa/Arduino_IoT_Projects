@@ -14,6 +14,11 @@ const char *mqtt_destination_floor_topic = "destination_floor";
 WiFiClient rev2Client;            // WiFi client
 PubSubClient client(rev2Client);  // MQTT client
 
+// Global variables
+int floor_request_from = 0;
+int floor_request_to = 0;
+int elevator_current_floor = 0;
+
 void setup() {
   // Start serial port at 9600 bps:
   Serial.begin(9600);
@@ -25,9 +30,7 @@ void setup() {
   Serial.println();
   client.setServer(mqtt_server,mqtt_port);
   client.setCallback(callback);
-  long lastMsg = 0;
-  char msg[50];
-  int value = 0;
+  
   if (!client.connected()) {
     reconnect();
   }
@@ -35,20 +38,32 @@ void setup() {
 
 void loop() {
   client.loop();
+  
+  boolean rc = client.publish(mqtt_floor_tracker_topic, elevator_current_floor); // Publish the elevator current floor
+}
 
-  if (Serial.available()) {    // Verify the presence of a character
-    String str = "";
-    str = Serial.readString();   // Read a string
-    //float prova = 3; //To send a integer
-    //char char_array2[6]; //To send a integer
-    //dtostrf(prova, 2, 0, char_array2); //To send a integer
-    int str_len = str.length() + 1;
-    char char_array[str_len];
-    str.toCharArray(char_array, str_len); // Convert the string in an array_char
-    boolean rc = client.publish(topic,char_array); // Publish the received string
-    //boolean rc = client.publish(topic,"3"); // Publish the received string
+
+// Function to process received messages
+void callback(char* topic, byte* message, unsigned int length) {
+  Serial.print("Message arrived on topic: ");
+  Serial.println(topic);
+  Serial.print(" - Message : ");
+  String messageTemp;
+  
+  for (int i = 0; i < length; i++) {
+    Serial.print((char)message[i]);
+    messageTemp += (char)message[i];
+  }
+  Serial.println(messageTemp);
+
+  if(strcmp(topic, mqtt_current_floor_topic)==0){
+    floor_request_from = toInt(messageTemt);
+  }
+  else if(strcmp(topic, mqtt_destination_floor_topic)==0){
+    floor_request_to = toInt(messageTemt);
   }
 }
+
 
 void setupWifi(){
   WiFi.begin(ssid, password);
@@ -86,19 +101,5 @@ void reconnect() {
       delay(2000);
     }
   }
-}
-
-// Function to process received messages
-void callback(char* topic, byte* message, unsigned int length) {
-  //Serial.print("Message arrived on topic: ");
-  //Serial.println(topic);
-  Serial.print(" - Message : ");
-  String messageTemp;
-  
-  for (int i = 0; i < length; i++) {
-    Serial.print((char)message[i]);
-    messageTemp += (char)message[i];
-  }
-  Serial.println();
 }
   
