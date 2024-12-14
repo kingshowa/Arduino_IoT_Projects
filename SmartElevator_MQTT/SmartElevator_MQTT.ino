@@ -28,6 +28,9 @@ Stepper stepper (spr,8,10,9,11);
 Servo servo;
 
 int SERVO_PIN = 13;
+int LED_PIN_0 = 2;
+int LED_PIN_1 = 3;
+int LED_PIN_2 = 4;
 
 void setup() {
   // Start serial port at 9600 bps:
@@ -47,12 +50,17 @@ void setup() {
   servo.write(0);
 
   stepper.setSpeed(10);
+  pinMode(LED_PIN0, OUTPUT);
+  pinMode(LED_PIN1, OUTPUT);
+  pinMode(LED_PIN2, OUTPUT);
+
+  digitalWrite(LED_PIN0, HIGH);
+  digitalWrite(LED_PIN1, HIGH);
+  digitalWrite(LED_PIN2, LOW);
 }
 
 void loop() {
   client.loop();
-  
-  boolean rc = client.publish(mqtt_floor_tracker_topic, current_floor); // Publish the elevator current floor
 
   if(request_from != request_to){
     if(request_from != current_floor){
@@ -65,7 +73,12 @@ void loop() {
 }
 
 void openDoor(){
-
+  delay(2000);
+  servo.write(90);
+  delay(5000);
+  // check if there is something on the door before proceeding
+  servo.write(0);
+  delay(2000);
 }
 
 void moveElevator(int A, int B){
@@ -99,6 +112,7 @@ void moveElevator(int A, int B){
     default: break;
   }
   current_floor = B;
+  client.publish(mqtt_floor_tracker_topic, current_floor); // Publish the elevator current floor
 }
 
 // Function to process received messages
