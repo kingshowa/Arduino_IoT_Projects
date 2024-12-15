@@ -23,6 +23,9 @@ int current_floor = 0;
 int distance = 5000;
 bool going_up, going_down;
 
+unsigned long previousMillis = 0; // Stores the last time the LED was toggled
+const long interval = 500;
+
 double spr = 2048;
 Stepper stepper (spr,8,10,9,11);
 Servo servo;
@@ -61,8 +64,12 @@ void setup() {
 
 void loop() {
   client.loop();
-
-  if(request_from != request_to){
+  
+  if(going_up!=going_down){
+    indicate(request_to);
+  }
+    
+  if((request_from != request_to) && going_up==going_down){
     if(request_from != current_floor){
       moveElevator(current_floor, request_from);
     } 
@@ -112,7 +119,32 @@ void moveElevator(int A, int B){
     default: break;
   }
   current_floor = B;
+  going_up = false;
+  going_down = false;
   client.publish(mqtt_floor_tracker_topic, current_floor); // Publish the elevator current floor
+}
+
+
+void indicate(int floor) {
+  unsigned long currentMillis = millis();
+
+  // Check if it's time to toggle the LED
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis; // Save the current time
+
+    // Toggle the LED
+    int ledState;
+    if(floor==0){
+      ledState = digitalRead(LED_PIN0);
+      digitalWrite(LED_PIN0, !ledState);
+    } else if(floor==1){
+      ledState = digitalRead(LED_PIN1);
+      digitalWrite(LED_PIN1, !ledState);
+    } else {
+      ledState = digitalRead(LED_PIN2);
+      digitalWrite(LED_PIN2, !ledState);
+    }
+  }
 }
 
 // Function to process received messages
