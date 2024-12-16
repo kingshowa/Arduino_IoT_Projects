@@ -64,12 +64,19 @@ void setup() {
 
 void loop() {
   client.loop();
-  
+
   if(going_up!=going_down){
     indicate(request_to);
+    if(current_floor==0){
+      digitalWrite(LED_PIN0, HIGH);
+    } else if(current_floor==1){
+      digitalWrite(LED_PIN1, HIGH);
+    } else if(current_floor==2){
+      digitalWrite(LED_PIN2, HIGH);
+    }
   }
     
-  if((request_from != request_to) && going_up==going_down){
+  if((request_from != request_to) && (going_up==going_down)){
     if(request_from != current_floor){
       moveElevator(current_floor, request_from);
     } 
@@ -98,19 +105,22 @@ void moveElevator(int A, int B){
   }
 
   swicth(A){
-    case 0: if(B==1){
+    case 0: digitalWrite(LED_PIN0, LOW);
+            if(B==1){
               stepper.step(distance);
             } else {
               stepper.step(distance*2);
             }
             break;
-    case 1: if(B==2){
+    case 1: digitalWrite(LED_PIN1, LOW);
+            if(B==2){
               stepper.step(distance);
             } else {
               stepper.step(-distance);
             }
             break;
-    case 2: if(B==1){
+    case 2: digitalWrite(LED_PIN2, LOW);
+            if(B==1){
               stepper.step(-distance);
             } else {
               stepper.step(-distance*2);
@@ -161,7 +171,7 @@ void callback(char* topic, byte* message, unsigned int length) {
   Serial.println(messageTemp);
 
   if(strcmp(topic, mqtt_current_floor_topic)==0){
-    request_from = toInt(messageTemt);
+    request_from = (toIntmessageTemt);
   }
   else if(strcmp(topic, mqtt_destination_floor_topic)==0){
     request_to = toInt(messageTemt);
