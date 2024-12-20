@@ -31,9 +31,9 @@ Stepper stepper (spr,8,10,9,11);
 Servo servo;
 
 int SERVO_PIN = 13;
-int LED_PIN_0 = 2;
-int LED_PIN_1 = 3;
-int LED_PIN_2 = 4;
+int LED_PIN0 = 2;
+int LED_PIN1 = 3;
+int LED_PIN2 = 4;
 
 void setup() {
   // Start serial port at 9600 bps:
@@ -64,17 +64,6 @@ void setup() {
 
 void loop() {
   client.loop();
-
-  if(going_up!=going_down){
-    indicate(request_to);
-    if(current_floor==0){
-      digitalWrite(LED_PIN0, HIGH);
-    } else if(current_floor==1){
-      digitalWrite(LED_PIN1, HIGH);
-    } else if(current_floor==2){
-      digitalWrite(LED_PIN2, HIGH);
-    }
-  }
     
   if((request_from != request_to) && (going_up==going_down)){
     if(request_from != current_floor){
@@ -87,6 +76,13 @@ void loop() {
 }
 
 void openDoor(){
+  if(current_floor==0){
+      digitalWrite(LED_PIN0, HIGH);
+  } else if(current_floor==1){
+      digitalWrite(LED_PIN1, HIGH);
+  } else if(current_floor==2){
+      digitalWrite(LED_PIN2, HIGH);
+  }
   delay(2000);
   servo.write(90);
   delay(5000);
@@ -104,30 +100,49 @@ void moveElevator(int A, int B){
     going_down = false;
   }
 
-  swicth(A){
+  switch(A){
     case 0: digitalWrite(LED_PIN0, LOW);
             if(B==1){
-              stepper.step(distance);
+              //stepper.step(distance);
+              Serial.println("Moving from G-floor to first-floor");
             } else {
-              stepper.step(distance*2);
+               Serial.println("Moving from G-floor to 2nd-floor");
+              //stepper.step(distance);
+               delay(1000);
+              Serial.println("Now on 1st  floor");
+              delay(1000);
+              //client.publish(mqtt_floor_tracker_topic, 1);
+              //stepper.step(distance);
+              Serial.println("Arrived on 2nd-floor");
             }
             break;
     case 1: digitalWrite(LED_PIN1, LOW);
             if(B==2){
-              stepper.step(distance);
+              //stepper.step(distance);
+              Serial.println("Moving from 1st-floor to 2nd-floor");
             } else {
-              stepper.step(-distance);
+              //stepper.step(-distance);
+              Serial.println("Moving from 1st-floor to G-floor");
             }
             break;
     case 2: digitalWrite(LED_PIN2, LOW);
             if(B==1){
-              stepper.step(-distance);
+              //stepper.step(-distance);
+              Serial.println("Moving from 2nd-floor to first-floor");
             } else {
-              stepper.step(-distance*2);
+              Serial.println("Moving from 2nd-floor to G-floor");
+              //stepper.step(distance);
+              //client.publish(mqtt_floor_tracker_topic, 1);
+              delay(1000);
+              Serial.println("Now on 1st  floor");
+              delay(1000);
+              //stepper.step(distance);
+              Serial.println("Arrive on G-floor");
             }
             break;
     default: break;
   }
+
   current_floor = B;
   going_up = false;
   going_down = false;
@@ -170,12 +185,12 @@ void callback(char* topic, byte* message, unsigned int length) {
   }
   Serial.println(messageTemp);
 
-  if(strcmp(topic, mqtt_current_floor_topic)==0){
-    request_from = (toIntmessageTemt);
-  }
-  else if(strcmp(topic, mqtt_destination_floor_topic)==0){
-    request_to = toInt(messageTemt);
-  }
+  // if(strcmp(topic, mqtt_current_floor_topic)==0){
+  //   request_from = toInt(messageTemt);
+  // }
+  // else if(strcmp(topic, mqtt_destination_floor_topic)==0){
+  //   request_to = toInt(messageTemt);
+  // }
 }
 
 
@@ -205,9 +220,9 @@ void reconnect() {
       Serial.println();
       Serial.println("Connected to the mosquitto Broker.");
       // Subscribe
-      client.subscribe(topic);
+      //client.subscribe(topic);
       Serial.print("Subscribed to the topic: ");
-      Serial.println(topic);
+      //Serial.println(topic);
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
