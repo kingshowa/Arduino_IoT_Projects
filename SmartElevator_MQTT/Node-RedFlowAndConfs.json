@@ -1,0 +1,555 @@
+[
+    {
+        "id": "091bbdd7879111af",
+        "type": "tab",
+        "label": "SmartElevatorSystem",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "1e1d53f44fd4196c",
+        "type": "mqtt-broker",
+        "name": "Mosquitto_MQTT_Broker",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "f4209e3c01acfa9c",
+        "type": "ui_group",
+        "d": true,
+        "name": "My Dashboard",
+        "tab": "0f07965cc9d81e3c",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "0f07965cc9d81e3c",
+        "type": "ui_tab",
+        "name": "Smart Elevator",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "9135caf7d9f694cd",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-custom",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "SmartElevatorTheme",
+                "default": "#4B7930",
+                "baseColor": "#0351a5",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "reset": false
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#4B7930",
+                    "value": "#0351a5",
+                    "edited": true
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0351a5",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#f7f7f7",
+                    "edited": true
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#0a2cb2",
+                    "edited": true
+                },
+                "group-textColor": {
+                    "value": "#f6f7f9",
+                    "edited": true
+                },
+                "group-borderColor": {
+                    "value": "#0472f0",
+                    "edited": true
+                },
+                "group-backgroundColor": {
+                    "value": "#0472f0",
+                    "edited": true
+                },
+                "widget-textColor": {
+                    "value": "#eeeeee",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0351a5",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#0472f0",
+                    "edited": true
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "4cf944553190e09f",
+        "type": "ui_group",
+        "z": "091bbdd7879111af",
+        "name": "Current Floor",
+        "tab": "0f07965cc9d81e3c",
+        "order": 2,
+        "disp": true,
+        "width": "8",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "7d52e9fdad592cbc",
+        "type": "ui_group",
+        "z": "091bbdd7879111af",
+        "name": "From",
+        "tab": "0f07965cc9d81e3c",
+        "order": 3,
+        "disp": true,
+        "width": "8",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "79f17525e2e05d49",
+        "type": "ui_group",
+        "z": "091bbdd7879111af",
+        "name": "To",
+        "tab": "0f07965cc9d81e3c",
+        "order": 4,
+        "disp": true,
+        "width": "8",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "d35cae8638b9c929",
+        "type": "ui_group",
+        "name": "UI-Button",
+        "tab": "0f07965cc9d81e3c",
+        "order": 5,
+        "disp": false,
+        "width": "8",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f0bdd93825d68194",
+        "type": "ui_text",
+        "z": "091bbdd7879111af",
+        "group": "4cf944553190e09f",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "floor_number",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": true,
+        "font": "Arial Black,Arial Black,Gadget,sans-serif",
+        "fontSize": "30",
+        "color": "#fafafa",
+        "x": 470,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "dca6bb88e3bc6b66",
+        "type": "ui_dropdown",
+        "z": "091bbdd7879111af",
+        "name": "From Floor Selection",
+        "label": "Select Your Current Floor",
+        "tooltip": "",
+        "place": "Select Floor",
+        "group": "7d52e9fdad592cbc",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "Ground Floor",
+                "value": "0",
+                "type": "str"
+            },
+            {
+                "label": "First Floor",
+                "value": "1",
+                "type": "str"
+            },
+            {
+                "label": "Second Floor",
+                "value": "2",
+                "type": "str"
+            },
+            {
+                "label": "Third Floor",
+                "value": "3",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 140,
+        "y": 160,
+        "wires": [
+            [
+                "eb17118a227943fc",
+                "d6ce6b9e8514dc17"
+            ]
+        ]
+    },
+    {
+        "id": "4efe395ef2d9a9d8",
+        "type": "ui_dropdown",
+        "z": "091bbdd7879111af",
+        "name": "To Floor Selection",
+        "label": "Select Destination Floor",
+        "tooltip": "",
+        "place": "Select destination",
+        "group": "79f17525e2e05d49",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "Ground Floor",
+                "value": "0",
+                "type": "str"
+            },
+            {
+                "label": "First Floor",
+                "value": "1",
+                "type": "str"
+            },
+            {
+                "label": "Second Floor",
+                "value": "2",
+                "type": "str"
+            },
+            {
+                "label": "Third Floor",
+                "value": "3",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 110,
+        "y": 240,
+        "wires": [
+            [
+                "eb17118a227943fc",
+                "b33154c88997d183"
+            ]
+        ]
+    },
+    {
+        "id": "eb17118a227943fc",
+        "type": "ui_toast",
+        "z": "091bbdd7879111af",
+        "position": "top right",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 410,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "8081e104c4eeb8d1",
+        "type": "mqtt out",
+        "z": "091bbdd7879111af",
+        "name": "publisher",
+        "topic": "elevator/request",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "1e1d53f44fd4196c",
+        "x": 660,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "d6ce6b9e8514dc17",
+        "type": "change",
+        "z": "091bbdd7879111af",
+        "name": "change_current_floor",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "from_floor",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "qos",
+                "pt": "msg",
+                "to": "1",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 420,
+        "y": 160,
+        "wires": [
+            [
+                "a7197c6759cf9244"
+            ]
+        ]
+    },
+    {
+        "id": "a7197c6759cf9244",
+        "type": "debug",
+        "z": "091bbdd7879111af",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "b33154c88997d183",
+        "type": "change",
+        "z": "091bbdd7879111af",
+        "name": "change_destination_floor",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "to_floor",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "qos",
+                "pt": "msg",
+                "to": "1",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 430,
+        "y": 240,
+        "wires": [
+            [
+                "a7197c6759cf9244"
+            ]
+        ]
+    },
+    {
+        "id": "b55796cf02d45585",
+        "type": "mqtt in",
+        "z": "091bbdd7879111af",
+        "name": "subscriber",
+        "topic": "elevator/status",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "1e1d53f44fd4196c",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 80,
+        "wires": [
+            [
+                "f0bdd93825d68194",
+                "a7197c6759cf9244"
+            ]
+        ]
+    },
+    {
+        "id": "2bd294d01e982bc9",
+        "type": "ui_button",
+        "z": "091bbdd7879111af",
+        "name": "UI Button",
+        "group": "d35cae8638b9c929",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Call Elevator",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "{\"trigger\":true}",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 80,
+        "y": 300,
+        "wires": [
+            [
+                "a451a7ec522a4540"
+            ]
+        ]
+    },
+    {
+        "id": "a451a7ec522a4540",
+        "type": "function",
+        "z": "091bbdd7879111af",
+        "name": "Formart Data",
+        "func": "let fromFloor = flow.get(\"from_floor\") || 0; // Default: 0\nlet toFloor = flow.get(\"to_floor\") || 0;     // Default: 0\n\n// Prepare confirmation for UI text\nlet uiMsg = { confirmation: `Request confirmed: Moving from Floor ${fromFloor} to Floor ${toFloor}` };\n\nif (fromFloor === toFloor) {\n    uiMsg = { confirmation: `Invalid request: Source and destination floors are the same.` };\n    return [null, uiMsg]; // Stops the flow\n}\n\n// Prepare the payload for MQTT\nlet mqttPayload = `${fromFloor},${toFloor}`;\n\n// Send to MQTT\nlet mqttMsg = { topic: \"elevator/request\", payload: mqttPayload };\n\n// Return both messages\nreturn [mqttMsg, uiMsg];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 300,
+        "wires": [
+            [
+                "8081e104c4eeb8d1"
+            ],
+            [
+                "557a70155788b7bf"
+            ]
+        ]
+    },
+    {
+        "id": "557a70155788b7bf",
+        "type": "ui_text",
+        "z": "091bbdd7879111af",
+        "group": "d35cae8638b9c929",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "Confirmation Text",
+        "label": "",
+        "format": "{{msg.confirmation}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 470,
+        "y": 380,
+        "wires": []
+    }
+]
