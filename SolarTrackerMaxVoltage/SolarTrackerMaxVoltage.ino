@@ -1,9 +1,3 @@
-/*
-  Arduino solar tracker
-  www.sciencebuddies.org
-*/
-
-// include servo library
 #include <Servo.h>
 
 // declare variables for pins
