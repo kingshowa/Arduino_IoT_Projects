@@ -56,7 +56,7 @@ void setup() {
   //digitalWrite(LASER, HIGH);
   updateFloorIndicator();
 
-  stepper.step(-step);
+  //stepper.step(step);
   
 }
 
