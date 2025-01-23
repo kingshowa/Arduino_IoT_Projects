@@ -3,13 +3,13 @@
 #include <Stepper.h>
 #include <Servo.h>
 
-// const char* ssid = "WiFi-LabIoT";
-// const char* password = "s1jzsjkw5b";
+const char* ssid = "WiFi-LabIoT";
+const char* password = "s1jzsjkw5b";
 
-const char* ssid = "Galaxy A516A59";
-const char* password = "20111996";
+// const char* ssid = "Galaxy A516A59";
+// const char* password = "20111996";
 
-const char* mqtt_server = "192.168.221.146";
+const char* mqtt_server = "192.168.1.115";
 const int mqtt_port = 1883;
 
 const char* mqtt_request_topic = "elevator/request";
@@ -24,7 +24,7 @@ int destination_floor = 0;
 
 bool is_moving = false;
 
-int analogValue = 0, step = 2900;
+int analogValue = 0, step = 2750;
 
 Stepper stepper(2048, 8, 10, 9, 11);
 Servo doorServo;
@@ -35,7 +35,7 @@ const int LASER = 12;
 
 void setup() {
   Serial.begin(9600);
-  
+
   setupWiFi();
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(mqttCallback);
@@ -52,25 +52,24 @@ void setup() {
   }
   digitalWrite(LED_PINS[0], HIGH);
 
-  pinMode(LASER, OUTPUT);
-  digitalWrite(LASER, HIGH);
+  //pinMode(LASER, OUTPUT);
+  //digitalWrite(LASER, HIGH);
   updateFloorIndicator();
 
-  //stepper.step(-2*step);
+  stepper.step(-step);
+  
 }
 
 void loop() {
   client.loop();
+
+  //Serial.println(analogRead(A0));
 
   if(WiFi.status() != WL_CONNECTED){
     Serial.println("Wifi Disconnected!");
     setupWiFi();
     reconnect();
   }
-  
-  
-  analogValue = analogRead(A0);
-  //Serial.println(analogValue);
 
   if (current_floor != requested_floor && !is_moving) {
     moveElevator(current_floor, requested_floor);
@@ -123,7 +122,6 @@ void moveElevator(int start, int end) {
 
   current_floor = end;
   updateFloorIndicator();
-  //openDoor();
   is_moving = false;
   if(end==destination_floor){
     requested_floor=end;
@@ -135,10 +133,11 @@ void openDoor() {
   doorServo.write(80); // Open door
   delay(5000);
   
-  while(analogValue < 500){
+  while(analogValue < 800){
     Serial.println(analogValue);
     analogValue = analogRead(A0);
   }
+  analogValue = 0;
   Serial.println("Closing the door ");
   doorServo.write(110); // Close door
   delay(2000);
