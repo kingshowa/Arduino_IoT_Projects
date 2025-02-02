@@ -9,7 +9,7 @@ const char* password = "s1jzsjkw5b";
 // const char* ssid = "Galaxy A516A59";
 // const char* password = "20111996";
 
-const char* mqtt_server = "192.168.1.115";
+const char* mqtt_server = "192.168.1.114";
 const int mqtt_port = 1883;
 
 const char* mqtt_request_topic = "elevator/request";
@@ -56,7 +56,7 @@ void setup() {
   //digitalWrite(LASER, HIGH);
   updateFloorIndicator();
 
-  //stepper.step(step);
+  //stepper.step(40);
   
 }
 
